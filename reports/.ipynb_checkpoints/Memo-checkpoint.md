@@ -25,7 +25,9 @@ Final model:
                                                 ('grad', GradientBoostingClassifier())] , 
                              final_estimator = 'LogisticRegression()',
                                           cv = 5
-          Model evaluation: Accuracy: 0.958; Precision: 0.949;  Recall: 0.773;  F1: 0.852
+          Model evaluation: Accuracy: 0.958; Precision: 0.949;  Recall: 0.773;  F1: 0.852. 
+          We have a relatively low recall and high precision, which means the model can’t detect the class perfectly but is highly trustable when it 
+          does. 
 
 
 Business implication:
