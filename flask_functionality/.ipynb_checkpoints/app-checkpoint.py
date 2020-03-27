@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+import pandas as pd
+from flask import Flask, request, render_template
+import pickle
+
+app = Flask(__name__)
+model = pickle.load(open('../src/model.pickle', 'rb'))
+=======
 import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify, render_template
@@ -5,6 +13,7 @@ import pickle
 
 app = Flask(__name__)
 model = pickle.load(open('model.pickle', 'rb'))
+>>>>>>> 53b277c36dab15f3ffa062ab9554f5ab59e65070
 
 @app.route('/')
 def home():
@@ -33,6 +42,8 @@ def predict():
     else:
         return render_template('index.html', prediction_text = 'This customer will likely stay.')
 
+<<<<<<< HEAD
+=======
 @app.route('/results',methods=['POST'])
 def results():
 
@@ -42,5 +53,6 @@ def results():
     output = prediction[0]
     return jsonify(output)
 
+>>>>>>> 53b277c36dab15f3ffa062ab9554f5ab59e65070
 if __name__ == "__main__":
     app.run(debug=True)

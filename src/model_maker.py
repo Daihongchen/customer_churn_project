@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
-file_name = '../data/Customer Churn Data.csv'
+file_name = '../../data/Customer Churn Data.csv'
 
 def pipeline(pickle = True):
     X_train, X_test, y_train, y_test = get_train_and_test_data()
@@ -63,6 +63,7 @@ def split_data(data):
     X = data.copy()
     X = X.drop(['churn'], axis = 1)
     return train_test_split(X, target, test_size = 0.30, random_state = 42)
+
 
 def make_model(X_train, y_train):
     '''

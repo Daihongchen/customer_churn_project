@@ -8,16 +8,14 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
-file_name = '../data/Customer Churn Data.csv'
+file_name = '../../data/Customer Churn Data.csv'
 
-def pipeline():
+def pipeline(pickle = True):
     X_train, X_test, y_train, y_test = get_train_and_test_data()
-    scaler = make_scaler(X_train)
-    X_train_scaled = scaler.transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-    model = make_model(X_train_scaled, y_train)
-    pickler(model, 'model.pickle')
-    pickler(scaler, 'scaler.pickle')
+    model = make_model(X_train, y_train)
+    if pickle:
+        pickler(model, 'model.pickle')
+    return model
 
     
 def get_train_and_test_data():
@@ -65,16 +63,7 @@ def split_data(data):
     X = data.copy()
     X = X.drop(['churn'], axis = 1)
     return train_test_split(X, target, test_size = 0.30, random_state = 42)
-    
 
-def make_scaler(X_train):
-    '''
-    Returns a standard scaler fit to X_train
-    '''
-    ss = StandardScaler()
-    ss.fit(X_train)
-    return ss
-    
 
 def make_model(X_train, y_train):
     '''

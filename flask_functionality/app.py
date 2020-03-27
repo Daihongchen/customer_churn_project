@@ -1,10 +1,9 @@
-import numpy as np
 import pandas as pd
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import pickle
 
 app = Flask(__name__)
-model = pickle.load(open('model.pickle', 'rb'))
+model = pickle.load(open('../src/model.pickle', 'rb'))
 
 @app.route('/')
 def home():
@@ -32,15 +31,6 @@ def predict():
         return render_template('index.html', prediction_text = 'This customer is likely to leave soon.')
     else:
         return render_template('index.html', prediction_text = 'This customer will likely stay.')
-
-@app.route('/results',methods=['POST'])
-def results():
-
-    data = request.get_json(force=True)
-    prediction = model.predict([np.array(list(data.values()))])
-
-    output = prediction[0]
-    return jsonify(output)
 
 if __name__ == "__main__":
     app.run(debug=True)
