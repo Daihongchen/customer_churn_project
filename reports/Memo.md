@@ -25,7 +25,7 @@ Final model:
                                                 ('grad', GradientBoostingClassifier())] , 
                              final_estimator = 'LogisticRegression()',
                                           cv = 5
-          Model evaluation: Accuracy: 0.958; Precision: 0.949;  Recall: 0.773;  F1: 0.852. 
+          Model evaluation: Accuracy: 0.98; Precision: 1.0;  Recall: 0.89;  F1: 0.94. 
           We have a relatively low recall and high precision, which means the model can’t detect the class perfectly but is highly trustable when it 
           does. 
 
@@ -39,7 +39,7 @@ Limitations of the model:
 
     The target variable in the dataset is inbalanced. There are only 15% of target variable are True, and 85% are False. The purpose of the modeling is to correctly detect the customers who with a True value, and reduce the chance when it fails to detect the True values, which means when it is positive, but was calssfied as negative, the false negative. Therefore, we want a high recall score in our model.
 
-    With a few feature engineering and selections, we have the final model with a recall as 0.77. It is satisfactory, but not ideal. We want to inform this score to the leadership team of the company that, we have 23% chance missclassifying the customers who will stop doing business as customers who would continue doing the business with the comany. 
+    With a few feature engineering and selections, we have the final model with a recall as 0.89. It is satisfactory, but not ideal. We want to inform this score to the leadership team of the company that, we have 11% chance missclassifying the customers who will stop doing business as customers who would continue doing the business with the comany. 
 
 
 Unexpected results during the experiments:
