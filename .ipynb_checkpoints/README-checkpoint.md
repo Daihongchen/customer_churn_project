@@ -23,11 +23,11 @@ Process:
     1. Preprocessing data: 
         a. Use HotOneEncoder dummy-coded the 'state' varible.
         b. Coded 'international plan', 'voice mail plan' into '1' and '0' from string. 
-        3. Define features X, and target y.
-        4. Split the X and y to X_train, X_hold, y_train, y_hold. X_hold, y_hold will be used to evaluate the final model. 
-        5. Split X_train y_train into subsets: X_train1, X_test1, y_train1, y_test1. 
-        6. Scaled X_train1, X_test1 Using  StandardScaler 
-        7. The target data is inbalanced, True : False is 
+        3. Define features X, and target y. 
+        4. Split X_train y_train into subsets: X_train1, X_test1, y_train1, y_test1. 
+        5. Scaled X_train1, X_test1 Using  StandardScaler 
+        6. The target data is inbalanced, True 15%; False 85%. 
+        7. Create a new feature of 'total charge' that is the sum of all the charges. 
     
     2. Modeling: 
         a. We selected StakingClassifier as our algorithm. 
@@ -53,7 +53,7 @@ Process:
                                                               GradientBoostingClassifier())] , 
                                           final_estimator = 'LogisticRegression()',
                                                        cv = 5
-          Model evaluation: Accuracy: 0.958; Precision: 0.949;  Recall: 0.773;  F1: 0.852
+          Model evaluation: Accuracy: 0.98; Precision: 1.0;  Recall: 0.89;  F1: 0.94
  
  Pickle: 
  
