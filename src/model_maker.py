@@ -54,6 +54,13 @@ def preprocess_data(df):
     df = preprocess_data_baseline(df)
 
     # combine all charges into "total charge" feature
+    df = combine_all_charges(df)
+
+    # return df without "state"
+    return df.drop('state', axis=1)
+
+def combine_all_charges(df):
+    # combine all charges into "total charge" feature
     charge_features = [
         'total day charge',
         'total eve charge',
@@ -61,10 +68,7 @@ def preprocess_data(df):
         'total night charge'
         ]
     df['total charge'] = df[charge_features].sum(axis=1)
-
-    # return df without charge features or "state"
-    return df.drop(charge_features + ['state'], axis=1)
-
+    return df.drop(charge_features, axis=1)
 
 def preprocess_data_baseline(df):
     """
@@ -74,9 +78,8 @@ def preprocess_data_baseline(df):
     convert "international plan" and "voice mail plan" to numeric values,
     drop unnecessary columns
     """
-    # convert yes/no to numeric
-    df['international plan'] = (df['international plan'] == 'yes').astype(int)
-    df['voice mail plan'] = (df['voice mail plan'] == 'yes').astype(int)
+    # convert "yes" and "no" to numeric values
+    df = convert_yes_no_to_numeric(df)
     
     # drop unnecessary features
     unused_features = [
@@ -84,6 +87,12 @@ def preprocess_data_baseline(df):
         'phone number'
     ]
     df = df.drop(unused_features, axis=1)
+    return df
+
+def convert_yes_no_to_numeric(df):
+    # convert yes/no to numeric
+    df['international plan'] = (df['international plan'] == 'yes').astype(int)
+    df['voice mail plan'] = (df['voice mail plan'] == 'yes').astype(int)
     return df
 
 def split_data(data):
