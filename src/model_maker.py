@@ -6,12 +6,12 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, StackingClassifier, GradientBoostingClassifier, ExtraTreesClassifier
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 file_name = '../../data/Customer Churn Data.csv'
 
 def pipeline(pickle = True):
-    X_train, X_test, y_train, y_test = get_train_and_test_data()
+    X_train, _, y_train, _ = get_train_and_test_data()
     model = make_model(X_train, y_train)
     if pickle:
         pickler(model, 'model.pickle')
@@ -23,30 +23,69 @@ def get_train_and_test_data():
     Returns testing and training data
     '''
     data = get_data()
-    return split_data(data)
+    X_train, X_test, y_train, y_test = split_data(data)
+    X_train = preprocess_data(X_train)
+    X_test = preprocess_data(X_test)
+    return X_train, X_test, y_train, y_test
     
     
 def get_data():
     '''
-    Gets data from datafile and does some pruning.
-    Drops columns that worsen the model and agregates the charges columns (This helps the model)
+    Gets data from datafile
     
     Returns
     -------
     Returns the data frame to be used in making the model
     '''
-    df = pd.read_csv(file_name)
-    
+    return pd.read_csv(file_name)
+
+
+def preprocess_data(df):
+    """
+    Preprocessing steps from baseline model, plus additional steps for final
+    model
+
+    Given a dataframe:
+    call baseline preprocessing function,
+    compute a hybrid feature "total charge",
+    drop "state" feature
+    """
+    # helper function from baseline model
+    df = preprocess_data_baseline(df)
+
+    # combine all charges into "total charge" feature
+    charge_features = [
+        'total day charge',
+        'total eve charge',
+        'total intl charge',
+        'total night charge'
+        ]
+    df['total charge'] = df[charge_features].sum(axis=1)
+
+    # return df without charge features or "state"
+    return df.drop(charge_features + ['state'], axis=1)
+
+
+def preprocess_data_baseline(df):
+    """
+    Preprocessing steps for the baseline model, except for one-hot encoding
+
+    Given a raw dataframe:
+    convert "international plan" and "voice mail plan" to numeric values,
+    drop unnecessary columns
+    """
+    # convert yes/no to numeric
     df['international plan'] = (df['international plan'] == 'yes').astype(int)
     df['voice mail plan'] = (df['voice mail plan'] == 'yes').astype(int)
-
-    df['total charge'] = df['total day charge'] + df['total eve charge'] + df['total intl charge'] + df['total night charge']
-    df = df.drop(['total day charge', 'total eve charge', 'total intl charge', 'total night charge'], axis = 1)
     
-    df = df.drop(['area code', 'phone number', 'state'], axis = 1)
+    # drop unnecessary features
+    unused_features = [
+        'area code',
+        'phone number'
+    ]
+    df = df.drop(unused_features, axis=1)
     return df
-    
-    
+
 def split_data(data):
     '''
     Does a train test split on the passed in with churn as the target
@@ -86,7 +125,6 @@ def metrics(y_true, y_pred):
     metric_dictionary['Precision'] = str(precision_score(y_true, y_pred))
     metric_dictionary['Recall'] = str(recall_score(y_true, y_pred))
     metric_dictionary['F1'] = str(f1_score(y_true, y_pred))
-    metric_dictionary['confusion_matrix'] = confusion_matrix(y_true, y_pred)
     return metric_dictionary    
     
     
