@@ -2,6 +2,13 @@ import pandas as pd
 from flask import Flask, request, render_template
 import pickle
 
+import os, sys
+module_path = os.path.abspath(os.pardir)
+if module_path not in sys.path:
+    sys.path.append(module_path)
+
+from src.model_maker import convert_yes_no_to_numeric, combine_all_charges
+
 app = Flask(__name__)
 model = pickle.load(open('../src/model.pickle', 'rb'))
 
@@ -17,13 +24,9 @@ def predict():
 
     df = pd.DataFrame([features], columns = feature_names)
 
-    df['international plan'] = (df['international plan'] == 'yes').astype(int)
-    df['voice mail plan'] = (df['voice mail plan'] == 'yes').astype(int)
-
-    df['total charge'] = df['total day charge'] + df['total eve charge'] + df['total intl charge'] + df['total night charge']
-    df = df.drop(['total day charge', 'total eve charge', 'total intl charge', 'total night charge'], axis = 1)
-
+    df = convert_yes_no_to_numeric(df)
     df = df.apply(pd.to_numeric)
+    df = combine_all_charges(df)
 
     prediction = model.predict(df)[0]
 
