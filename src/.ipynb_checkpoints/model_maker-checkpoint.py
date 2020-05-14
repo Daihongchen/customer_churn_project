@@ -8,7 +8,12 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 
-file_name = '../../data/Customer Churn Data.csv'
+import os, sys
+module_path = os.path.abspath(os.path.join(os.pardir, os.pardir))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+
+file_name = 'data/Customer Churn Data.csv'
 
 def pipeline(pickle = True):
     X_train, X_test, y_train, y_test = get_train_and_test_data()
