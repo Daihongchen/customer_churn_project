@@ -10,7 +10,7 @@ Business Questions:
 
     1. Build a classifier to predict whether a customer will ("soon") stop doing business with SyriaTel, a telecommunications 
     company.
-    2. . Most naturally, your audience here would be the telecom business itself, interested in losing money on customers who don't 
+    2. Most naturally, your audience here would be the telecom business itself, interested in losing money on customers who don't 
     stick around very long. Are there any predictable patterns here?
 
 Project goal: 
